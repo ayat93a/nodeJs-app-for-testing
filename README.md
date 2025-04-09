@@ -6,4 +6,5 @@ tar -xzvf my-express-app.tar.gz
 
 # Run the app after untar
 1- npm i
+
 2- node app.js
