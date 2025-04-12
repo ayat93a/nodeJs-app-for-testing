@@ -3,7 +3,7 @@ ______
 tar -czvf node-app.tar.gz app.js package.json package-lock.json Dockerfile dockerCopmose.yml
 
 ## untar the artifact 
-tar -xzvf my-express-app.tar.gz
+tar -xzvf node-app.tar.gz
 
 ## Run the app after untar
 1- npm i
