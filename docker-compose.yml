@@ -11,4 +11,5 @@ services:
     restart: always  
 networks:
   app:
+    name: app
     driver: bridge
