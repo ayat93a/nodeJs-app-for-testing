@@ -1,6 +1,6 @@
 # Create NodeJs app artifact :
 ______
-tar -czvf my-express-app.tar.gz app.js package.json package-lock.json
+tar -czvf node-app.tar.gz app.js package.json package-lock.json Dockerfile dockerCopmose.yml
 
 ## untar the artifact 
 tar -xzvf my-express-app.tar.gz
