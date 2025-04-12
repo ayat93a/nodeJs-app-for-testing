@@ -6,7 +6,8 @@ services:
     container_name : "node-app"
     ports:
       - "3000:3000"
-    networks: app
+    networks:
+      - app
     restart: always  
 networks:
   app:
