@@ -6,10 +6,7 @@ services:
     container_name : "node-app"
     ports:
       - "3000:3000"
-    networks:
-      - app
-    restart: always  
-networks:
-  app:
-    name: app
-    driver: bridge
+    network_mode : "app"
+    deploy:
+      restart_policy:
+        condition: on-failure
