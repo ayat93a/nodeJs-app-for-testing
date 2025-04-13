@@ -7,6 +7,4 @@ services:
     ports:
       - "3000:3000"
     network_mode : "app"
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: on-failure
