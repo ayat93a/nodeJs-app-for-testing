@@ -1,19 +1,14 @@
-FROM node:20-alpine
+# -------- Build stage --------
+FROM node:20 AS builder
+WORKDIR /usr/src/app
+COPY nodejs-app-for-testing-ansible-1.0.0.tgz ./
+RUN tar -xvzf nodejs-app-for-testing-ansible-1.0.0.tgz --strip-components=1
+RUN npm install --omit=dev
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
-WORKDIR /home/node/app
-
-COPY package*.json ./ 
-
-RUN chown -R node:node /home/node/app
-
-USER node
-
-RUN npm i
-
-COPY --chown=node:node . .
-
+# -------- Runtime stage --------
+FROM node:20-slim
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app ./
 EXPOSE 3000
-
-CMD [ "node" , "app.js" ]
+CMD ["node", "app.js"]
