@@ -1,9 +1,9 @@
 # Create NodeJs app artifact :
 ______
-tar -czvf node-app.tar.gz app.js package.json package-lock.json Dockerfile docker-copmose.yml
+node pack
 
 ## untar the artifact 
-tar -xzvf node-app.tar.gz
+tar -xzvf nodejs-app-for-testing-ansible-1.0.0.tgz
 
 ## Run the app after untar
 1- npm i
