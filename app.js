@@ -6,7 +6,7 @@ const app = express();
 
 // Define a route to handle GET requests to the root URL
 app.get('/', (req, res) => {
-  res.send('Hello World from Ayat!');
+  res.send('Hello World from Rahma!');
 });
 
 // Define the port number
