@@ -16,10 +16,7 @@ stages:
     pool:
       name: agents
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '20.x'
-      displayName: "Install Node.js"
+
 
     - script: |
         npm ci
@@ -30,9 +27,7 @@ stages:
         mv *.tgz app.tgz
       displayName: "Package Node.js app"
 
-    - publish: $(System.DefaultWorkingDirectory)/app.tgz
-      artifact: app-package
-      displayName: "Publish app.tgz as pipeline artifact"
+    
 
 - stage: DockerBuild
   displayName: "Build Docker Image"
@@ -70,3 +65,5 @@ stages:
         echo "Starting new container..."
         docker run -d -p 80:3000 --name nodeapp $(imageName):$(tag)
       displayName: "Deploy container on same VM"
+   
+    
