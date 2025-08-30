@@ -1,8 +1,8 @@
 # -------- Build stage --------
 FROM node:20 AS builder
 WORKDIR /usr/src/app
-COPY nodejs-app-for-testing-ansible-1.0.0.tgz ./
-RUN tar -xvzf nodejs-app-for-testing-ansible-1.0.0.tgz --strip-components=1
+COPY *.tgz ./
+RUN tar -xvzf *.tgz --strip-components=1
 RUN npm install --omit=dev
 
 
