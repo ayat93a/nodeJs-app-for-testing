@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 // Define the port number
 const port = 3000;
 
-console.log(`Hello World from Ayat! is now appearing in the browser`);
+console.log(`Hello World from Ayat! is now appearing in the browser !!`);
 
 // Start the server and listen on the specified port
 app.listen(port, () => {
