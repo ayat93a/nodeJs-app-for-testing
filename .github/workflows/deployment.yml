@@ -72,6 +72,6 @@ jobs:
 
             echo "Run new container"
             docker run -d --restart unless-stopped \
-              -p 80:3000 \
+              -p 81:3000 \
               --name nodeapp \
               ${{ secrets.DOCKER_USERNAME }}/nodeapp:latest
