@@ -81,14 +81,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download build artifacts
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+
+      - name: Download version artifact
         uses: actions/download-artifact@v4
         with:
           name: version
 
       - name: Debug downloaded files
         run: |
-          echo "Downloaded:"
+          echo "Downloaded files:"
           ls -l
 
       - name: Extract app artifact
@@ -96,11 +101,11 @@ jobs:
           mkdir -p app
           tar -xzf $(ls nodeapp-*.tgz | head -n 1) -C app
 
-      - name: Load version into environment
+      - name: Load VERSION into environment
         run: |
-          VERSION=$(grep 'version' artifacts/version.yaml | awk -F'"' '{print $2}')
+          VERSION=$(grep 'version' version.yaml | awk -F'"' '{print $2}')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Using VERSION=$VERSION"
+          echo "Loaded VERSION=$VERSION"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
