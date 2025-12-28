@@ -11,6 +11,9 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Get the app version
         run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
 
