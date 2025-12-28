@@ -8,15 +8,6 @@ on:
 
 jobs:
   # -------- CI Stage --------
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get the app version
-        run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
-
-      - name: Print version
-        run: echo "Version is $VERSION"
-
   build:
     runs-on: ubuntu-latest
     steps:
