@@ -61,7 +61,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/nodeapp:${{ github.sha }}
-            ${{ secrets.DOCKER_USERNAME }}/nodeapp:latest
+            ${{ secrets.DOCKER_USERNAME }}/nodeapp:$VERSION
 
   # -------- Deploy to Server via SSH --------
   deploy:
