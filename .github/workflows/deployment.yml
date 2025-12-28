@@ -45,6 +45,24 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      
+      - name: Package app artifact
+        run: |
+          ARTIFACT_NAME="nodeapp-${VERSION}-${GITHUB_SHA:0:7}.tgz"
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+          mkdir artifact-temp
+          cp -r * artifact-temp/
+          cd artifact-temp
+          tar -czf "../artifacts/$ARTIFACT_NAME" .
+          cd ..
+          rm -rf artifact-temp
+          ls -R artifacts
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: artifacts/
 
       # Optional: run tests
       # - name: Run tests
