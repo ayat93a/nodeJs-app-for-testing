@@ -6,7 +6,7 @@ const app = express();
 
 // Define a route to handle GET requests to the root URL
 app.get('/', (req, res) => {
-  res.send('GitHub Action !!');
+  res.send('GitHub Action, new server !!');
 });
 
 // Define the port number
