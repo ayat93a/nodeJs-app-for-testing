@@ -50,13 +50,13 @@ jobs:
         run: |
           ARTIFACT_NAME="nodeapp-${VERSION}-${GITHUB_SHA:0:7}.tgz"
           echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+
           mkdir artifact-temp
-          cp -r * artifact-temp/
-          cd artifact-temp
-          tar -czf "../artifacts/$ARTIFACT_NAME" .
-          cd ..
+          shopt -s extglob
+          cp -r !(artifact-temp|artifacts|.git|.github) artifact-temp/
+          tar -czf "artifacts/$ARTIFACT_NAME" -C artifact-temp .
           rm -rf artifact-temp
-          ls -R artifacts
+
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
