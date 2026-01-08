@@ -144,6 +144,11 @@ jobs:
   promot:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+
+    outputs:
+    latest_tag: ${{ steps.extract.outputs.latest_tag }}
+    base_tag: ${{ steps.extract.outputs.base_tag }}
+
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -156,6 +161,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2  
 
       - name: Get latest test image tag
+        id: extract
         run: |
           LATEST_TAG=$(aws ecr describe-images \
             --repository-name nodeapp \
