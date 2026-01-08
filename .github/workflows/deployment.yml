@@ -140,22 +140,28 @@ jobs:
           tags: |
             ${{ secrets.ECR_URL }}/nodeapp:${{ env.VERSION }}
 
-  # -------- promot the image --------
+  # -------- promot the image if master branch--------
   promot:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+
+    outputs:
+      latest_tag: ${{ steps.extract.outputs.latest_tag }}
+      base_tag: ${{ steps.extract.outputs.base_tag }}
+
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2  
 
       - name: Get latest test image tag
+        id: extract
         run: |
           LATEST_TAG=$(aws ecr describe-images \
             --repository-name nodeapp \
@@ -168,7 +174,36 @@ jobs:
             | {pushedAt: .imagePushedAt, tag: (.imageTags[] | select(contains("test")))}
           ' | jq -s 'sort_by(.pushedAt) | last.tag')
 
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          BASE_TAG=$(echo "$LATEST_TAG" | cut -d'-' -f1 | tr -d '"')
+
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "base_tag=$BASE_TAG" >> $GITHUB_OUTPUT
+
+          echo "DEBUG latest_tag=$LATEST_TAG"
+          echo "DEBUG base_tag=$BASE_TAG"
+
+  push-promoted-image:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: promot
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2  
+
+      - name: Push Docker Image to ecr
+        run: |
+            docker pull ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.latest_tag }}
+            docker tag ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.latest_tag }}  \
+                    ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
+            docker push ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
+
       
 
   # -------- Deploy to Server via SSH --------
