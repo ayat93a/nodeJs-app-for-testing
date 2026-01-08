@@ -199,8 +199,8 @@ jobs:
 
       - name: Push Docker Image to ecr
         run: |
-            docker pull ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.LATEST_TAG }}
-            docker tag ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.LATEST_TAG }}  \
+            docker pull ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.latest_tag }}
+            docker tag ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.latest_tag }}  \
                     ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
             docker push ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
 
