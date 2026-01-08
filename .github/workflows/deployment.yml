@@ -168,8 +168,14 @@ jobs:
             | {pushedAt: .imagePushedAt, tag: (.imageTags[] | select(contains("test")))}
           ' | jq -s 'sort_by(.pushedAt) | last.tag')
 
+          
+          LATEST_TAG=$(echo "$LATEST_TAG" | tr -d '"')
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
           echo "LATEST_TAG=$LATEST_TAG"
+
+          BASE_TAG=$(echo "$LATEST_TAG" | cut -d'-' -f1 | tr -d '"')
+          echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_ENV
+          echo "export BASE_TAG=$BASE_TAG"
       
 
   # -------- Deploy to Server via SSH --------
