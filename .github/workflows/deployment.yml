@@ -140,8 +140,8 @@ jobs:
           tags: |
             ${{ secrets.ECR_URL }}/nodeapp:${{ env.VERSION }}
 
-  # -------- Deploy to Server via SSH --------
-  deploy:
+  # -------- promot the image --------
+  promot:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
