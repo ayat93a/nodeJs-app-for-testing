@@ -140,7 +140,7 @@ jobs:
           tags: |
             ${{ secrets.ECR_URL }}/nodeapp:${{ env.VERSION }}
 
-  # -------- promot the image --------
+  # -------- promot the image if master branch--------
   promot:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
