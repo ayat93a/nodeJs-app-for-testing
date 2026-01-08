@@ -153,9 +153,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2  
@@ -174,14 +174,13 @@ jobs:
             | {pushedAt: .imagePushedAt, tag: (.imageTags[] | select(contains("test")))}
           ' | jq -s 'sort_by(.pushedAt) | last.tag')
 
-          
-          LATEST_TAG=$(echo "$LATEST_TAG" | tr -d '"')
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
-          echo "LATEST_TAG=$LATEST_TAG"
-
           BASE_TAG="${LATEST_TAG%-test}"
-          echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_OUTPUT
-          echo "export BASE_TAG=$BASE_TAG"
+
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "base_tag=$BASE_TAG" >> $GITHUB_OUTPUT
+
+          echo "DEBUG latest_tag=$LATEST_TAG"
+          echo "DEBUG base_tag=$BASE_TAG"
 
   push-promoted-image:
     runs-on: ubuntu-latest
