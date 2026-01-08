@@ -176,6 +176,28 @@ jobs:
           BASE_TAG=$(echo "$LATEST_TAG" | cut -d'-' -f1 | tr -d '"')
           echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_ENV
           echo "export BASE_TAG=$BASE_TAG"
+
+  push-promoted-image:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    needs: promot
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2  
+
+      - name: Push Docker Image to ecr
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: |
+            ${{ secrets.ECR_URL }}/nodeapp:${{ env.BASE_TAG }}
       
 
   # -------- Deploy to Server via SSH --------
