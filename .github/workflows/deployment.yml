@@ -174,7 +174,7 @@ jobs:
   trivy-scan:
     runs-on: ubuntu-latest
     needs: promot
-    if: github.ref == 'refs/heads/master'
+    # if: github.ref == 'refs/heads/master'
     steps:
     
       - name: Run Trivy vulnerability scan
