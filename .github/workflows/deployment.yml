@@ -170,11 +170,11 @@ jobs:
 
           
           LATEST_TAG=$(echo "$LATEST_TAG" | tr -d '"')
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
           echo "LATEST_TAG=$LATEST_TAG"
 
           BASE_TAG=$(echo "$LATEST_TAG" | cut -d'-' -f1 | tr -d '"')
-          echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_ENV
+          echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_OUTPUT
           echo "export BASE_TAG=$BASE_TAG"
 
   push-promoted-image:
@@ -193,11 +193,12 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2  
 
       - name: Push Docker Image to ecr
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: |
-            ${{ secrets.ECR_URL }}/nodeapp:${{ env.BASE_TAG }}
+        run: |
+            docker pull ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.LATEST_TAG }}
+            docker tag ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.LATEST_TAG }}  \
+                    ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
+            docker push ${{ secrets.ECR_URL }}/nodeapp:${{ needs.promot.outputs.base_tag }}
+
       
 
   # -------- Deploy to Server via SSH --------
