@@ -179,7 +179,7 @@ jobs:
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
           echo "LATEST_TAG=$LATEST_TAG"
 
-          BASE_TAG=$(echo "$LATEST_TAG" | cut -d'-' -f1 | tr -d '"')
+          BASE_TAG="${LATEST_TAG%-test}"
           echo "export BASE_TAG=$BASE_TAG" >> $GITHUB_OUTPUT
           echo "export BASE_TAG=$BASE_TAG"
 
