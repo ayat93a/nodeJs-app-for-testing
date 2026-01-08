@@ -169,6 +169,7 @@ jobs:
           ' | jq -s 'sort_by(.pushedAt) | last.tag')
 
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo "LATEST_TAG=$LATEST_TAG"
       
 
   # -------- Deploy to Server via SSH --------
