@@ -146,8 +146,8 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
     outputs:
-    latest_tag: ${{ steps.extract.outputs.latest_tag }}
-    base_tag: ${{ steps.extract.outputs.base_tag }}
+      latest_tag: ${{ steps.extract.outputs.latest_tag }}
+      base_tag: ${{ steps.extract.outputs.base_tag }}
 
     steps:
       - name: Configure AWS credentials
